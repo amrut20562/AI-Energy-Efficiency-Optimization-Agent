@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Energy Efficiency Optimization Agent</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#222;
+}
+
+header{
+    background:#0f4c81;
+    color:white;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+header h1{
+    margin-bottom:8px;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:30px auto;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.section-title{
+    margin-bottom:18px;
+    color:#0f4c81;
+}
+
+.quick-prompts{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.prompt-btn{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#edf5ff;
+    color:#0f4c81;
+    cursor:pointer;
+    text-align:left;
+    transition:.25s;
+    font-size:15px;
+}
+
+.prompt-btn:hover{
+    background:#0f4c81;
+    color:white;
+    transform:translateY(-2px);
+}
+
+textarea{
+    width:100%;
+    height:150px;
+    resize:vertical;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-top:15px;
+    font-size:15px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+button.action{
+    border:none;
+    padding:12px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    background:#0f4c81;
+    color:white;
+    font-size:15px;
+}
+
+button.action:hover{
+    background:#09365a;
+}
+
+.output{
+    margin-top:20px;
+    padding:20px;
+    border-radius:10px;
+    background:#eef7ee;
+    border-left:5px solid #28a745;
+    display:none;
+    white-space:pre-wrap;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    color:#666;
+    font-size:14px;
+}
+
+@media(max-width:600px){
+.buttons{
+    flex-direction:column;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚡ AI Energy Efficiency Optimization Agent</h1>
+    <p>Analyze • Optimize • Forecast • Save Energy</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2 class="section-title">🚀 Quick Start Prompts</h2>
+
+        <div class="quick-prompts">
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Analyze the energy consumption data of my mechanical system and identify the major sources of energy loss.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Find operational inefficiencies in my HVAC, compressor, or turbine and explain why they reduce efficiency.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Suggest practical operational changes and maintenance actions that can reduce energy consumption.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Predict the energy consumption for the next 30 days based on historical operational data.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Compare my system's performance with industry benchmarks and identify improvement opportunities.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Generate a complete energy efficiency report with recommendations and predicted savings.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Monitor the latest energy consumption data and detect abnormal energy spikes.
+            </button>
+
+            <button class="prompt-btn" onclick="setPrompt(this)">
+                Estimate potential cost savings after implementing optimization recommendations.
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="section-title">💬 Chat with the Agent</h2>
+
+        <textarea id="prompt" placeholder="Type your request or choose a Quick Start Prompt above..."></textarea>
+
+        <div class="buttons">
+            <button class="action" onclick="submitPrompt()">Send</button>
+            <button class="action" onclick="clearChat()">Clear</button>
+        </div>
+
+        <div class="output" id="output"></div>
+
+    </div>
+
+</div>
+
+<footer>
+    AI Energy Efficiency Optimization Agent | Demo UI
+</footer>
+
+<script>
+
+  window.wxOConfiguration = {
+    orchestrationID: "6ffab0e8b9104640ae2d89fec1bc2d3b_e6a50790-a597-47e7-b8ec-fab9e7f888fb",
+    hostURL: "https://au-syd.watson-orchestrate.cloud.ibm.com",
+    rootElementID: "root",
+    deploymentPlatform: "ibmcloud",
+    crn: "crn:v1:bluemix:public:watsonx-orchestrate:au-syd:a/6ffab0e8b9104640ae2d89fec1bc2d3b:e6a50790-a597-47e7-b8ec-fab9e7f888fb::",
+    chatOptions: {
+        agentId: "1cd9fea0-6fbd-48bc-87e4-8e837a48981c", 
+    }
+  };
+  setTimeout(function () {
+    const script = document.createElement('script');
+    script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+    script.addEventListener('load', function () {
+        wxoLoader.init();
+    });
+    document.head.appendChild(script);
+  }, 0);                     
+function setPrompt(button){
+    document.getElementById("prompt").value = button.innerText.trim();
+}
+
+function submitPrompt(){
+
+    let text=document.getElementById("prompt").value.trim();
+
+    if(text===""){
+        alert("Please enter a prompt.");
+        return;
+    }
+
+    let response=
+`Prompt Submitted Successfully!
+
+User Request:
+"${text}"
+
+The AI Agent will now:
+
+✔ Retrieve energy consumption data
+✔ Analyze equipment efficiency
+✔ Detect operational inefficiencies
+✔ Generate optimization recommendations
+✔ Forecast future energy usage
+✔ Prepare visualization dashboard insights
+
+(This is a frontend demo. Connect your IBM Langflow / Orchestrate backend here.)`;
+
+    let output=document.getElementById("output");
+    output.style.display="block";
+    output.innerText=response;
+}
+
+function clearChat(){
+    document.getElementById("prompt").value="";
+    document.getElementById("output").style.display="none";
+}
+</script>
+
+</body>
+</html>
